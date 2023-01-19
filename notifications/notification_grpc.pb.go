@@ -25,15 +25,6 @@ type NotificationClient interface {
 	Send(ctx context.Context, in *NotificationRequest, opts ...grpc.CallOption) (*NotificationResponse, error)
 }
 
-type NotificationRequest struct{
-	title string
-	body string
-}
-
-type NotificationResponse struct{
-	message string
-}
-
 type notificationClient struct {
 	cc grpc.ClientConnInterface
 }

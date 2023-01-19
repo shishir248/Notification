@@ -27,11 +27,11 @@ type server struct {
 }
 
 func (s *server) SendNotification(ctx context.Context, in *pb.NotificationRequest) (*pb.NotificationResponse, error) {
-	fmt.Println("Sending notification:", in.response)
+	fmt.Println("Sending notification:", in.body)
 	for _, conn := range s.wsConnections {
 		conn.WriteJSON(map[string]string{
 			"title":   "Notification Title",
-			"message": in.response,
+			"message": in.body,
 			"icon":    "path/to/icon.png",
 		})
 	}
