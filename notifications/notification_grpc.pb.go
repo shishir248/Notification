@@ -27,7 +27,7 @@ type NotificationClient interface {
 
 type NotificationRequest struct{
 	title string
-	response string
+	body string
 }
 
 type NotificationResponse struct{
