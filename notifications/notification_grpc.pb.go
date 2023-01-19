@@ -47,6 +47,7 @@ func (c *notificationClient) Send(ctx context.Context, in *NotificationRequest, 
 // for forward compatibility
 type NotificationServer interface {
 	Send(context.Context, *NotificationRequest) (*NotificationResponse, error)
+	mustEmbedUnimplementedNotificationServer()
 }
 
 // UnimplementedNotificationServer must be embedded to have forward compatible implementations.
@@ -56,6 +57,7 @@ type UnimplementedNotificationServer struct {
 func (UnimplementedNotificationServer) Send(context.Context, *NotificationRequest) (*NotificationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
 }
+func (UnimplementedNotificationServer) mustEmbedUnimplementedNotificationServer() {}
 
 // UnsafeNotificationServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to NotificationServer will

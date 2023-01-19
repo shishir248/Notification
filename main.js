@@ -22,9 +22,10 @@ const requestNotificationPermission = async () => {
 
 const getAPIData = async () => {
   let lastSale;
-  await axios.get("https://qcapi.nasdaq.com/api/quote/aapl/info?assetclass=stocks", -1).then((response) => {
-    lastSale = response.data.data.primaryData.lastSalePrice;
-  });
+  // await axios.get("https://qcapi.nasdaq.com/api/quote/aapl/info?assetclass=stocks", -1).then((response) => {
+  //   lastSale = response.data.data.primaryData.lastSalePrice;
+  // });
+  console.log("hey");
   return lastSale;
 };
 

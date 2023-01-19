@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 	pb "github.com/shishir248/Notification/notifications"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 // Define ports for connections
@@ -24,6 +25,7 @@ var upgrader = websocket.Upgrader{}
 
 type server struct {
 	wsConnections []*websocket.Conn
+	pb.UnimplementedNotificationServer
 }
 
 func (s *server) Send(ctx context.Context, in *pb.NotificationRequest) (*pb.NotificationResponse, error) {
@@ -46,17 +48,22 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	grpcServer := grpc.NewServer()
 	pb.RegisterNotificationServer(grpcServer, s)
+	// Register reflection service on gRPC server.
+	reflection.Register(grpcServer)
+
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
+		} else {
+			fmt.Println("Server is running")
 		}
 	}()
-
 	// HTTP server
 	r := mux.NewRouter()
-	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			log.Println("upgrade:", err)
