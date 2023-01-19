@@ -26,16 +26,16 @@ type server struct {
 	wsConnections []*websocket.Conn
 }
 
-func (s *server) SendNotification(ctx context.Context, in *pb.NotificationRequest) (*pb.NotificationResponse, error) {
-	fmt.Println("Sending notification:", in.body)
+func (s *server) Send(ctx context.Context, in *pb.NotificationRequest) (*pb.NotificationResponse, error) {
+	fmt.Println("Sending notification:", in.Body)
 	for _, conn := range s.wsConnections {
 		conn.WriteJSON(map[string]string{
 			"title":   "Notification Title",
-			"message": in.body,
+			"message": in.Body,
 			"icon":    "path/to/icon.png",
 		})
 	}
-	return &pb.NotificationResponse{message: "Notification sent!"}, nil
+	return &pb.NotificationResponse{Message: "Notification sent!"}, nil
 }
 
 func main() {
