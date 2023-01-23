@@ -2,15 +2,22 @@ syntax = "proto3";
 
 package notifications;
 option go_package = "./";
-service Notification {
-    rpc Send(NotificationRequest) returns (NotificationResponse) {}
+
+service PushNotification {
+    rpc Subscribe (Subscription) returns (Response) {}
+    rpc Unsubscribe (Subscription) returns (Response) {}
+    rpc SendNotification (Notification) returns (Response) {}
 }
 
-message NotificationRequest {
+message Subscription {
+    string email = 1;
+}
+
+message Notification {
     string title = 1;
-    string body = 2;
+    string message = 2;
 }
 
-message NotificationResponse {
+message Response {
     string message = 1;
 }
